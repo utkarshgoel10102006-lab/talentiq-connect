@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useSpring } from "framer-motion";
 
 interface TiltCardProps {
@@ -21,7 +21,6 @@ export function TiltCard({
   onClick,
 }: TiltCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
 
   const springConfig = { stiffness: 260, damping: 20, mass: 0.4 };
   const rotateX = useSpring(0, springConfig);
@@ -43,19 +42,17 @@ export function TiltCard({
     rotateY.set(tiltY);
 
     if (glare) {
-      setGlarePos({
-        x: (x / rect.width) * 100,
-        y: (y / rect.height) * 100,
-        opacity: 0.22,
-      });
+      cardRef.current.style.setProperty("--glare-x", `${(x / rect.width) * 100}%`);
+      cardRef.current.style.setProperty("--glare-y", `${(y / rect.height) * 100}%`);
+      cardRef.current.style.setProperty("--glare-opacity", "0.22");
     }
   };
 
   const handleMouseLeave = () => {
     rotateX.set(0);
     rotateY.set(0);
-    if (glare) {
-      setGlarePos((prev) => ({ ...prev, opacity: 0 }));
+    if (glare && cardRef.current) {
+      cardRef.current.style.setProperty("--glare-opacity", "0");
     }
   };
 
@@ -75,17 +72,17 @@ export function TiltCard({
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className={`relative overflow-hidden rounded-3xl transition-shadow duration-300 ${className}`}
+        className={`relative overflow-hidden rounded-3xl transition-shadow duration-300 will-change-transform ${className}`}
       >
         {children}
 
-        {/* Specular Glare / Sheen Overlay */}
+        {/* Specular Glare / Sheen Overlay using CSS variables - zero re-render overhead */}
         {glare && (
           <div
             className="pointer-events-none absolute inset-0 transition-opacity duration-300"
             style={{
-              opacity: glarePos.opacity,
-              background: `radial-gradient(circle 320px at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.4), transparent 80%)`,
+              opacity: "var(--glare-opacity, 0)",
+              background: `radial-gradient(circle 320px at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255,255,255,0.4), transparent 80%)`,
             }}
           />
         )}

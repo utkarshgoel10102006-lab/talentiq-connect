@@ -1,39 +1,42 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Sparkles, Award } from "lucide-react";
 
 export function FloatingHeroEcosystem() {
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+  const mouseRawX = useMotionValue(0);
+  const mouseX = useSpring(mouseRawX, { stiffness: 45, damping: 25, mass: 0.5 });
+
+  const leafX = useTransform(mouseX, [-1, 1], [-25, 25]);
+  const sealX = useTransform(mouseX, [-1, 1], [18, -18]);
+  const orbX = useTransform(mouseX, [-1, 1], [-35, 35]);
+  const cardX = useTransform(mouseX, [-1, 1], [28, -28]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 30;
-      const y = (e.clientY / innerHeight - 0.5) * 30;
-      setMouseOffset({ x, y });
+      const normalized = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseRawX.set(normalized);
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [mouseRawX]);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 select-none">
       {/* 1. FLOATING AYURVEDIC BOTANICAL LEAF (Top Left) */}
       <motion.div
+        style={{ x: leafX }}
         animate={{
           y: [0, -18, 0],
           rotate: [0, 6, -4, 0],
-          x: mouseOffset.x * 0.8,
         }}
         transition={{
           y: { duration: 7, repeat: Infinity, ease: "easeInOut" },
           rotate: { duration: 9, repeat: Infinity, ease: "easeInOut" },
-          x: { duration: 0.8, ease: "easeOut" },
         }}
-        className="absolute top-20 left-4 sm:left-12 lg:left-24 opacity-40 hover:opacity-80 transition-opacity"
+        className="absolute top-20 left-4 sm:left-12 lg:left-24 opacity-40 hover:opacity-80 transition-opacity will-change-transform"
       >
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-500/10 border border-emerald-400/30 backdrop-blur-md flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)]">
           <svg
@@ -53,17 +56,16 @@ export function FloatingHeroEcosystem() {
 
       {/* 2. ANCIENT SANSKRIT SEAL / MANDALA GLYPH (Top Right) */}
       <motion.div
+        style={{ x: sealX }}
         animate={{
           y: [0, 16, 0],
           rotate: [0, 360],
-          x: mouseOffset.x * -0.6,
         }}
         transition={{
           y: { duration: 8, repeat: Infinity, ease: "easeInOut" },
           rotate: { duration: 60, repeat: Infinity, ease: "linear" },
-          x: { duration: 0.8, ease: "easeOut" },
         }}
-        className="absolute top-24 right-4 sm:right-16 lg:right-28 opacity-35"
+        className="absolute top-24 right-4 sm:right-16 lg:right-28 opacity-35 will-change-transform"
       >
         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-amber-400/30 bg-amber-500/5 backdrop-blur-md flex items-center justify-center shadow-[0_0_35px_rgba(245,158,11,0.25)]">
           <div className="w-14 h-14 rounded-full border border-dashed border-amber-300/40 flex items-center justify-center text-amber-200 font-serif text-lg font-bold">
@@ -74,17 +76,16 @@ export function FloatingHeroEcosystem() {
 
       {/* 3. GLOWING TALENT INTELLIGENCE 3D ORB (Middle Left) */}
       <motion.div
+        style={{ x: orbX }}
         animate={{
           y: [0, -22, 0],
-          x: mouseOffset.x * 1.2,
           scale: [1, 1.05, 1],
         }}
         transition={{
           y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
           scale: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-          x: { duration: 0.8, ease: "easeOut" },
         }}
-        className="absolute top-[48%] left-2 sm:left-10 lg:left-16 opacity-70 hidden md:block"
+        className="absolute top-[48%] left-2 sm:left-10 lg:left-16 opacity-70 hidden md:block will-change-transform"
       >
         <div className="relative">
           <div className="absolute -inset-2 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-full blur-xl opacity-60 animate-pulse" />
@@ -96,17 +97,16 @@ export function FloatingHeroEcosystem() {
 
       {/* 4. LIVE FLOATING OPPORTUNITY CARD (Middle Right) */}
       <motion.div
+        style={{ x: cardX }}
         animate={{
           y: [0, 20, 0],
-          x: mouseOffset.x * -0.9,
           rotate: [0, -2, 1, 0],
         }}
         transition={{
           y: { duration: 7.5, repeat: Infinity, ease: "easeInOut" },
           rotate: { duration: 10, repeat: Infinity, ease: "easeInOut" },
-          x: { duration: 0.8, ease: "easeOut" },
         }}
-        className="absolute top-[52%] right-2 sm:right-8 lg:right-20 hidden lg:block opacity-85"
+        className="absolute top-[52%] right-2 sm:right-8 lg:right-20 hidden lg:block opacity-85 will-change-transform"
       >
         <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-emerald-500/30 backdrop-blur-xl shadow-2xl shadow-emerald-950/50 space-y-1.5 w-56">
           <div className="flex items-center justify-between">

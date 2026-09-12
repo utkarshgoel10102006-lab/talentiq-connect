@@ -136,6 +136,21 @@
   -webkit-text-fill-color: transparent;
 }
 
+/* Performance mode GPU compositor optimizations */
+[data-perf-mode="smooth"] .backdrop-blur-2xl,
+[data-perf-mode="smooth"] .backdrop-blur-xl,
+[data-perf-mode="smooth"] .backdrop-blur-md,
+[data-perf-mode="smooth"] .backdrop-blur {
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /* Custom smooth scrollbar */
 html {
   scroll-behavior: smooth;

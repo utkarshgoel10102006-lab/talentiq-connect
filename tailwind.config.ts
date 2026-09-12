@@ -107,8 +107,8 @@ const config: Config = {
           "100%": { backgroundPosition: "200% 0" },
         },
         glow: {
-          "0%, 100%": { opacity: "0.4", filter: "blur(20px)" },
-          "50%": { opacity: "0.8", filter: "blur(30px)" },
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "0.85" },
         },
         marquee: {
           "0%": { transform: "translateX(0%)" },
