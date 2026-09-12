@@ -28,6 +28,10 @@ export default function FloatingOrbs() {
     canvas.width = width;
     canvas.height = height;
 
+    let isSmoothMode =
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.perfMode === "smooth";
+
     const colors = [
       "rgba(99,  102, 241, 0.35)",  // indigo
       "rgba(139, 92,  246, 0.3)",   // violet
@@ -37,20 +41,29 @@ export default function FloatingOrbs() {
       "rgba(245, 158, 11,  0.2)",   // amber
     ];
 
-    const orbs: Orb[] = Array.from({ length: 7 }, () => ({
+    const orbs: Orb[] = Array.from({ length: 6 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      radius: 180 + Math.random() * 280,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      radius: 160 + Math.random() * 220,
       color: colors[Math.floor(Math.random() * colors.length)],
-      opacity: 0.3 + Math.random() * 0.3,
+      opacity: 0.25 + Math.random() * 0.25,
     }));
+
+    const handlePerfChange = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      isSmoothMode = customEvent.detail === "smooth";
+    };
+    window.addEventListener("perfModeChange", handlePerfChange);
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
-      for (const orb of orbs) {
+      // In smooth mode, only draw the 3 primary soft ambient orbs to maintain maximum framerate
+      const activeOrbs = isSmoothMode ? orbs.slice(0, 3) : orbs;
+
+      for (const orb of activeOrbs) {
         orb.x += orb.vx;
         orb.y += orb.vy;
 
@@ -66,7 +79,7 @@ export default function FloatingOrbs() {
         gradient.addColorStop(0, orb.color);
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
-        ctx.globalAlpha = orb.opacity;
+        ctx.globalAlpha = isSmoothMode ? orb.opacity * 0.7 : orb.opacity;
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
@@ -90,13 +103,14 @@ export default function FloatingOrbs() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("perfModeChange", handlePerfChange);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className="fixed inset-0 pointer-events-none transition-opacity duration-700"
       style={{ zIndex: 0, mixBlendMode: "screen" }}
     />
   );

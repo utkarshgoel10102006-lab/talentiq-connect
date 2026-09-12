@@ -18,12 +18,12 @@ interface ScrollRevealProps {
 
 const getVariants = (direction: Direction, distance: number) => {
   const hidden: Record<Direction, Variant> = {
-    up: { opacity: 0, y: distance, filter: "blur(8px)" },
-    down: { opacity: 0, y: -distance, filter: "blur(8px)" },
-    left: { opacity: 0, x: distance, filter: "blur(8px)" },
-    right: { opacity: 0, x: -distance, filter: "blur(8px)" },
-    scale: { opacity: 0, scale: 0.7, filter: "blur(12px)" },
-    rotate: { opacity: 0, scale: 0.8, rotate: -8, filter: "blur(6px)" },
+    up: { opacity: 0, y: distance },
+    down: { opacity: 0, y: -distance },
+    left: { opacity: 0, x: distance },
+    right: { opacity: 0, x: -distance },
+    scale: { opacity: 0, scale: 0.9 },
+    rotate: { opacity: 0, scale: 0.95, rotate: -4 },
   };
 
   const visible: Variant = {
@@ -32,7 +32,6 @@ const getVariants = (direction: Direction, distance: number) => {
     y: 0,
     scale: 1,
     rotate: 0,
-    filter: "blur(0px)",
   };
 
   return { hidden: hidden[direction], visible };
@@ -120,7 +119,6 @@ export function StaggerContainer({
               y: 0,
               scale: 1,
               rotate: 0,
-              filter: "blur(0px)",
             },
           }}
           transition={{

@@ -17,13 +17,15 @@ export function SpotlightCard({
   ...props
 }: SpotlightCardProps) {
   const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!divRef.current) return;
     const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    divRef.current.style.setProperty("--spotlight-x", `${x}px`);
+    divRef.current.style.setProperty("--spotlight-y", `${y}px`);
   };
 
   const handleMouseEnter = () => setOpacity(1);
@@ -38,12 +40,12 @@ export function SpotlightCard({
       className={`relative overflow-hidden rounded-3xl border border-white/[0.09] bg-gradient-to-b from-slate-900/90 via-[#0a0f24]/90 to-slate-950/90 backdrop-blur-2xl transition-all duration-300 hover:border-white/20 hover:scale-[1.01] hover:shadow-2xl hover:shadow-blue-500/10 ${className}`}
       {...props}
     >
-      {/* Moving cursor spotlight */}
+      {/* Moving cursor spotlight using CSS variables - zero re-render overhead */}
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300"
         style={{
           opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`,
+          background: `radial-gradient(600px circle at var(--spotlight-x, 150px) var(--spotlight-y, 150px), ${spotlightColor}, transparent 40%)`,
         }}
       />
 

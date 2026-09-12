@@ -41,6 +41,7 @@ import { TiltCard } from "@/components/animations/TiltCard";
 import { SkillNetworkGraph } from "@/components/animations/SkillNetworkGraph";
 import { ScrollStoryline } from "@/components/animations/ScrollStoryline";
 import { AIPipelineVisualizer } from "@/components/animations/AIPipelineVisualizer";
+import { SmoothnessControl } from "@/components/animations/SmoothnessControl";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -153,13 +154,14 @@ export default function LandingPage() {
             <a href="#faq" className="hover:text-sky-400 transition-colors">FAQ</a>
           </nav>
 
-          {/* Header Action Buttons */}
-          <div className="flex items-center space-x-3">
+          {/* Header Action Buttons & Smoothness Control */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <SmoothnessControl />
             <Link href="/login">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all"
+                className="text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all hidden sm:inline-flex"
               >
                 Sign In
               </Button>
@@ -258,7 +260,7 @@ export default function LandingPage() {
             <p className="text-[11px] uppercase tracking-widest text-slate-400 font-bold mb-3 flex items-center justify-center gap-1.5">
               <Flame className="w-3.5 h-3.5 text-amber-400 animate-bounce" /> Instant SIH Jury Persona Launcher (1-Click Autologin):
             </p>
-            <StaggerContainer staggerDelay={0.12} direction="up" distance={40} className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+            <StaggerContainer staggerDelay={0.1} direction="up" distance={40} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
               <TiltCard dataCursor="LOGIN" maxTilt={10}>
                 <button
                   onClick={() => handleDemoLogin("STUDENT", "student@demo.com")}
@@ -269,7 +271,7 @@ export default function LandingPage() {
                     <span className="text-[10px] font-bold">78% READY</span>
                   </div>
                   <p className="text-xs font-bold text-white group-hover:text-blue-200">1. Student</p>
-                  <p className="text-[10px] text-slate-400 truncate">Priya Sharma (BAMS)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Priya (BAMS)</p>
                 </button>
               </TiltCard>
 
@@ -283,7 +285,7 @@ export default function LandingPage() {
                     <span className="text-[10px] font-bold">RECRUITER</span>
                   </div>
                   <p className="text-xs font-bold text-white group-hover:text-purple-200">2. Industry Hub</p>
-                  <p className="text-[10px] text-slate-400 truncate">Dr. Arvind (Dabur R&D)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Dr. Arvind (Dabur)</p>
                 </button>
               </TiltCard>
 
@@ -297,7 +299,21 @@ export default function LandingPage() {
                     <span className="text-[10px] font-bold">HEATMAPS</span>
                   </div>
                   <p className="text-xs font-bold text-white group-hover:text-amber-200">3. TPO Command</p>
-                  <p className="text-[10px] text-slate-400 truncate">Prof. Rajeshwar (AIIA)</p>
+                  <p className="text-[10px] text-slate-400 truncate">Prof. Rajeshwar</p>
+                </button>
+              </TiltCard>
+
+              <TiltCard dataCursor="LOGIN" maxTilt={10}>
+                <button
+                  onClick={() => handleDemoLogin("FACULTY", "faculty@demo.com")}
+                  className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-950/40 hover:bg-rose-900/60 hover:border-rose-400 transition-all text-left group shadow-lg shadow-rose-950/50"
+                >
+                  <div className="flex items-center justify-between text-rose-400 mb-1">
+                    <BookOpen className="w-4 h-4" />
+                    <span className="text-[10px] font-bold">CURRICULUM</span>
+                  </div>
+                  <p className="text-xs font-bold text-white group-hover:text-rose-200">4. Faculty Hub</p>
+                  <p className="text-[10px] text-slate-400 truncate">Dr. Ananya (AIIA)</p>
                 </button>
               </TiltCard>
 
@@ -310,7 +326,7 @@ export default function LandingPage() {
                     <Landmark className="w-4 h-4" />
                     <span className="text-[10px] font-bold">POLICY</span>
                   </div>
-                  <p className="text-xs font-bold text-white group-hover:text-emerald-200">4. Ministry Admin</p>
+                  <p className="text-xs font-bold text-white group-hover:text-emerald-200">5. Ministry Admin</p>
                   <p className="text-[10px] text-slate-400 truncate">Smt. Sunita, IAS</p>
                 </button>
               </TiltCard>
@@ -721,6 +737,60 @@ export default function LandingPage() {
                 <span>&bull; NCISM &amp; Ministry of Ayush Ready</span>
               </div>
             </SpotlightCard>
+
+            {/* Card 5 (Full Width Spans 3 cols) - Macro National Feedback Loop */}
+            <SpotlightCard className="md:col-span-3 p-8 space-y-5 bg-gradient-to-br from-slate-900/90 via-emerald-950/20 to-slate-950/90 border-emerald-500/30 shadow-2xl" spotlightColor="rgba(16, 185, 129, 0.25)">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shadow-lg shadow-emerald-500/20 shrink-0">
+                    <Landmark className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="ayush" className="text-[10px] bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                        Macro Loop Closure
+                      </Badge>
+                      <span className="text-[11px] font-mono text-emerald-400 font-semibold">National Feedback OS</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                      5. National Skill Governance &amp; Macro Telemetry (Ministry Command &amp; DBT Auditing)
+                    </h3>
+                  </div>
+                </div>
+                <Link href="/government" className="shrink-0">
+                  <Button size="sm" variant="outline" className="text-xs font-bold border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/20 hover:text-white rounded-xl">
+                    Inspect Ministry Portal &rarr;
+                  </Button>
+                </Link>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-5xl">
+                Completes the national closed-loop lifecycle. Synthesizes micro-placement telemetry, institutional clinical logs, and campus readiness scores into macro-economic intelligence for the Ministry of Ayush, AICTE, and NCISM. Autonomously audits and verifies Direct Benefit Transfer (DBT) internship stipends while proactively pinpointing regional talent deficits across 28 states.
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs">
+                <div className="p-3.5 rounded-xl bg-slate-900/90 border border-emerald-500/25">
+                  <span className="text-[10px] text-slate-400 block font-medium">Direct Benefit Transfer</span>
+                  <span className="font-extrabold text-emerald-400 text-base block mt-0.5">₹4.85 Cr</span>
+                  <span className="text-[10px] text-slate-400">100% DBT Verified to Students</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-slate-900/90 border border-white/[0.08]">
+                  <span className="text-[10px] text-slate-400 block font-medium">State Skill Bottlenecks</span>
+                  <span className="font-extrabold text-sky-400 text-base block mt-0.5">18 States</span>
+                  <span className="text-[10px] text-slate-400">Geo-spatial Deficit Heatmaps</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-slate-900/90 border border-white/[0.08]">
+                  <span className="text-[10px] text-slate-400 block font-medium">Regulatory Alignment</span>
+                  <span className="font-extrabold text-amber-400 text-base block mt-0.5">99.4% Index</span>
+                  <span className="text-[10px] text-slate-400">NCISM &amp; AICTE NCrF Standard</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-slate-900/90 border border-white/[0.08]">
+                  <span className="text-[10px] text-slate-400 block font-medium">Cryptographic Audit</span>
+                  <span className="font-extrabold text-purple-400 text-base block mt-0.5">Zero Hallucination</span>
+                  <span className="text-[10px] text-slate-400">DigiLocker &amp; APAAR Verified</span>
+                </div>
+              </div>
+            </SpotlightCard>
           </StaggerContainer>
         </div>
       </section>
@@ -1053,6 +1123,12 @@ export default function LandingPage() {
               🛡️ TPO Command (AIIA)
             </Button>
             <Button
+              onClick={() => handleDemoLogin("FACULTY", "faculty@demo.com")}
+              className="text-xs font-bold px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white shadow-xl shadow-rose-600/30 rounded-xl"
+            >
+              📚 Faculty Hub (Dr. Ananya)
+            </Button>
+            <Button
               onClick={() => handleDemoLogin("GOVERNMENT", "government@demo.com")}
               className="text-xs font-bold px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white shadow-xl shadow-emerald-600/30 rounded-xl"
             >
@@ -1096,7 +1172,7 @@ export default function LandingPage() {
               <ul className="space-y-1.5 text-[11px] text-slate-400">
                 <li><a href="#showcase" className="hover:text-sky-300">Competency Radar</a></li>
                 <li><a href="#architecture" className="hover:text-sky-300">5 Closed-Loop Pillars</a></li>
-                <li><a href="#journey" className="hover:text-sky-300">Student 5-Stage Journey</a></li>
+                <li><a href="#journey" className="hover:text-sky-300">Student Placement Journey</a></li>
                 <li><a href="#matrix" className="hover:text-sky-300">Jury Benchmark Matrix</a></li>
                 <li><a href="#faq" className="hover:text-sky-300">Technical Defense</a></li>
               </ul>
